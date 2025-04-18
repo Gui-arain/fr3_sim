@@ -1,0 +1,58 @@
+fr3:
+# Configure effort-based trajectory controller for the fr3 arm
+#   arm_controller:
+#       type: effort_controllers/JointTrajectoryController
+#       joints:
+#           - fr3_joint1
+#           - fr3_joint2
+#           - fr3_joint3
+#           - fr3_joint4
+#           - fr3_joint5
+#           - fr3_joint6
+#           - fr3_joint7
+      
+#       gains:
+#           fr3_joint1: { p: 30000, d: 100, i: 0.02 } #{ p: 15000, d: 50, i: 0.01 }
+#           fr3_joint2: { p: 30000, d: 100, i: 0.02 } #{ p: 15000, d: 50, i: 0.01 }
+#           fr3_joint3: { p: 30000, d: 100, i: 0.02 } #{ p: 15000, d: 50, i: 0.01 }
+#           fr3_joint4: { p: 30000, d: 100, i: 0.02 } #{ p: 15000, d: 50, i: 0.01 }
+#           fr3_joint5: { p: 30000, d: 100, i: 0.02 } #{ p: 10000, d: 50, i: 0.01 }
+#           fr3_joint6: { p: 10000, d: 100, i: 0.02 } #{ p:  5000, d: 50, i: 0.01 }
+#           fr3_joint7: { p: 4000, d: 100, i: 0.02 } #{ p:  2000, d: 50, i: 0.01 }
+#       state_publish_rate: 25
+#       constraints:
+#           goal_time: 2.0
+#           stopped_velocity_tolerance: 0.01
+#           fr3_joint1: { goal_position: 0.001 }  # <-- add this
+#           fr3_joint3: { goal_position: 0.001 }
+#           fr3_joint4: { goal_position: 0.001 }
+#           fr3_joint2: { goal_position: 0.001 }
+#           fr3_joint5: { goal_position: 0.001 }
+#           fr3_joint6: { goal_position: 0.001 }
+#           fr3_joint7: { goal_position: 0.001 }
+
+#Configure position-based trajectory controller for the fr3 arm
+  arm_controller:
+      type: position_controllers/JointTrajectoryController
+      joints:
+          - fr3_joint1
+          - fr3_joint2
+          - fr3_joint3
+          - fr3_joint4
+          - fr3_joint5
+          - fr3_joint6
+          - fr3_joint7
+      
+      constraints:
+        goal_time: 2.0
+        stopped_velocity_tolerences: 0.05
+        fr3_joint1: {trajectory: 0.1, goal: 0.1}
+        fr3_joint2: {trajectory: 0.1, goal: 0.1}
+        fr3_joint3: {trajectory: 0.1, goal: 0.1}
+        fr3_joint4: {trajectory: 0.1, goal: 0.1}
+        fr3_joint5: {trajectory: 0.1, goal: 0.1}
+        fr3_joint6: {trajectory: 0.1, goal: 0.1}
+        fr3_joint7: {trajectory: 0.1, goal: 0.1}
+      stop_trajectory_duration: 0.5
+      state_publish_rate: 25
+      action_monitor_rate: 10
