@@ -11,7 +11,7 @@ const double tau = 2 * M_PI;
 
 void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
 {
-    move_group.setEndEffectorLink("fr3_link7");  // Adjust to your robot's EE link
+    move_group.setEndEffectorLink("fr3_link_pip_tip");  // Adjust to your robot's EE link
     move_group.setPoseReferenceFrame("world");
 
     geometry_msgs::PoseStamped current_pose;
@@ -26,9 +26,9 @@ void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
     target_pose1.orientation.y = 0.0;
     target_pose1.orientation.z = 0.0;
     target_pose1.orientation.w = 0.0;
-    target_pose1.position.x = 0.4;
-    target_pose1.position.y = 0.0;
-    target_pose1.position.z = 0.4;
+    target_pose1.position.x = 0.625;
+    target_pose1.position.y = 0.025;
+    target_pose1.position.z = 0.05;
 
     if (!move_group.setPoseTarget(target_pose1)) {
         ROS_WARN("Pose target is invalid or not accepted.");
