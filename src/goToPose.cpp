@@ -52,6 +52,36 @@ void execute_move(moveit::planning_interface::MoveGroupInterface& move_group)
     
 }
 
+void addCollisionObject(moveit::planning_interface::PlanningSceneInterface& planning_scene_interface)
+{
+    std::vector<moveit_msgs::CollisionObject> collision_objects;
+    collision_objects.resize(1);
+
+    //Add the table
+    collision_objects[0].id = "table";
+    collision_objects[0].header.frame_id = "fr3_link0";
+
+    //Dimensions of the table
+    collision_objects[0].primitives.resize(1);
+    collision_objects[0].primitives[0].type = collision_objects[0].primitives[0].BOX;
+    collision_objects[0].primitives[0].dimensions.resize(3);
+    collision_objects[0].primitives[0].dimensions[0] = 0.8;
+    collision_objects[0].primitives[0].dimensions[1] = 0.8;
+    collision_objects[0].primitives[0].dimensions[2] = 0.02;
+
+    //Pose of the table
+    collision_objects[0].primitive_poses.resize(1);
+    collision_objects[0].primitive_poses[0].position.x = 0.6;
+    collision_objects[0].primitive_poses[0].position.y = 0;
+    collision_objects[0].primitive_poses[0].position.z = 0.01;
+    collision_objects[0].primitive_poses[0].orientation.w = 1.0;
+
+    //Add the table to the scene
+    collision_objects[0].operation = collision_objects[0].ADD;
+
+    planning_scene_interface.applyCollisionObjects(collision_objects);
+
+}
 
 int main(int argc, char** argv)
 {
@@ -63,7 +93,14 @@ int main(int argc, char** argv)
 
     ros::WallDuration(1.0).sleep();
     moveit::planning_interface::MoveGroupInterface group("fr3_arm");
+    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+
     group.setPlanningTime(45.0);
+
+    //add the collisions objects in the scene
+    addCollisionObject(planning_scene_interface);
+
+    ros::WallDuration(1.0).sleep();
 
     // plan the move
     plan_move(group);
