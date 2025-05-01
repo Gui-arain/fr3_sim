@@ -28,7 +28,7 @@ void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
     target_pose1.orientation.w = 0.0;
     target_pose1.position.x = 0.625;
     target_pose1.position.y = 0.025;
-    target_pose1.position.z = 0.05;
+    target_pose1.position.z = 0.2;
 
     if (!move_group.setPoseTarget(target_pose1)) {
         ROS_WARN("Pose target is invalid or not accepted.");
