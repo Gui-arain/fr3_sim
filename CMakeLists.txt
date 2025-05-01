@@ -146,6 +146,9 @@ add_executable(goToPose_node src/goToPose.cpp)
 add_dependencies(goToPose_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(goToPose_node ${catkin_LIBRARIES})
 
+add_executable(small_traj_node src/small_traj_test.cpp)
+add_dependencies(small_traj_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(small_traj_node ${catkin_LIBRARIES})
 
 
 #############

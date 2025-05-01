@@ -9,7 +9,7 @@
 const double tau = 2 * M_PI;
 
 
-void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
+void plan_move(moveit::planning_interface::MoveGroupInterface& move_group, std::array<double, 3> target_pos)
 {
     move_group.setEndEffectorLink("fr3_link_pip_tip");  // Adjust to your robot's EE link
     move_group.setPoseReferenceFrame("world");
@@ -26,9 +26,9 @@ void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
     target_pose1.orientation.y = 0.0;
     target_pose1.orientation.z = 0.0;
     target_pose1.orientation.w = 0.0;
-    target_pose1.position.x = 0.625;
-    target_pose1.position.y = 0.025;
-    target_pose1.position.z = 0.2;
+    target_pose1.position.x = target_pos[0]; //0.625;
+    target_pose1.position.y = target_pos[1]; //0.025;
+    target_pose1.position.z = target_pos[2]; //0.2;
 
     if (!move_group.setPoseTarget(target_pose1)) {
         ROS_WARN("Pose target is invalid or not accepted.");
@@ -86,7 +86,7 @@ void addCollisionObject(moveit::planning_interface::PlanningSceneInterface& plan
 int main(int argc, char** argv)
 {
 
-    ros::init(argc, argv, "goToPose_node");
+    ros::init(argc, argv, "small_traj_node");
     ros::NodeHandle nh;
     ros::AsyncSpinner spinner(1);
     spinner.start();
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
     ros::WallDuration(1.0).sleep();
 
     // plan the move
-    plan_move(group);
+    plan_move(group, {0.625, 0.025, 0.2});
 
     ros::WallDuration(1.0).sleep();
 
@@ -111,6 +111,14 @@ int main(int argc, char** argv)
     execute_move(group);
 
     ros::WallDuration(1.0).sleep();
+
+    //second target
+    plan_move(group, {0.625, 0.025, 0.05});
+
+    ros::WallDuration(1.0).sleep();
+
+    //exexcute the planned path
+    execute_move(group);
 
     ros::waitForShutdown();
     return 0;
