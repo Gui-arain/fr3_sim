@@ -56,6 +56,11 @@
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
 
+  <build_depend>actionlib</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <build_depend>control_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
   <build_depend>interactive_markers</build_depend>
   <build_depend>moveit_core</build_depend>
   <build_depend>moveit_ros_perception</build_depend>
@@ -81,6 +86,11 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
 
   <exec_depend>interactive_markers</exec_depend>
   <exec_depend>moveit_core</exec_depend>

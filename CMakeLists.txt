@@ -18,6 +18,11 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_perception
   moveit_ros_planning_interface
   pluginlib
+  sensor_msgs
+  trajectory_msgs
+  control_msgs
+  actionlib
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,19 +58,17 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
-## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
-
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  MoveSingleJoint.srv
+)
+
+## Generate messages in the 'msg' folder
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -112,7 +115,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES fr3_sim
-#  CATKIN_DEPENDS controller_manager joint_state_controller robot_state_publisher roscpp rospy std_msgs
+CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
@@ -149,6 +152,18 @@ target_link_libraries(goToPose_node ${catkin_LIBRARIES})
 add_executable(small_traj_node src/small_traj_test.cpp)
 add_dependencies(small_traj_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(small_traj_node ${catkin_LIBRARIES})
+
+add_executable(process_node src/process.cpp)
+add_dependencies(process_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(process_node ${catkin_LIBRARIES})
+
+add_executable(joint_mover_node src/joint_mover.cpp)
+add_dependencies(joint_mover_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(joint_mover_node ${catkin_LIBRARIES})
+
+add_executable(move_single_joint_server src/move_joint_service.cpp)
+add_dependencies(move_single_joint_server ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(move_single_joint_server ${catkin_LIBRARIES})
 
 
 #############
