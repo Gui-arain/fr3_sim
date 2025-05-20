@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "fr3_sim/MoveSingleJoint.h"  // Replace with your actual package name
+#include "fr3_sim/MoveSingleJoint.h"  
 
 std::map<std::string, double> joint_positions;
 

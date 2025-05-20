@@ -9,7 +9,7 @@
 const double tau = 2 * M_PI;
 
 
-void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
+void get_pip_tip_pose(moveit::planning_interface::MoveGroupInterface& move_group)
 {
     move_group.setEndEffectorLink("fr3_link_pip_tip");  // Adjust to your robot's EE link
     move_group.setPoseReferenceFrame("world");
@@ -20,37 +20,12 @@ void plan_move(moveit::planning_interface::MoveGroupInterface& move_group)
     ROS_INFO("current orientation y: %f",current_pose.pose.orientation.y);
     ROS_INFO("current orientation z: %f",current_pose.pose.orientation.z);
     ROS_INFO("current orientation w: %f",current_pose.pose.orientation.w);
+    ROS_INFO("current position x: %f",current_pose.pose.position.x);
+    ROS_INFO("current position y: %f",current_pose.pose.position.y);
+    ROS_INFO("current position z: %f",current_pose.pose.position.z);
 
-    geometry_msgs::Pose target_pose1;
-    target_pose1.orientation.x = 0.0;
-    target_pose1.orientation.y = 0.0;
-    target_pose1.orientation.z = 0.0;
-    target_pose1.orientation.w = 0.0;
-    target_pose1.position.x = 0.625;
-    target_pose1.position.y = 0.1; //0.025;
-    target_pose1.position.z = 0.2;
-
-    if (!move_group.setPoseTarget(target_pose1)) {
-        ROS_WARN("Pose target is invalid or not accepted.");
-        return;
-    }
-
-    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-    bool success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-    ROS_INFO("Visualizing plan 1 (pose goal) %s", success ? "SUCCESS" : "FAILED");
 }
 
-
-void execute_move(moveit::planning_interface::MoveGroupInterface& move_group)
-{
-    move_group.setGoalJointTolerance(0.001);
-    move_group.setGoalPositionTolerance(0.001);
-    move_group.setGoalOrientationTolerance(0.01);
-
-    bool success = (move_group.move() == moveit::core::MoveItErrorCode::SUCCESS);
-    ROS_INFO("Execution %s", success ? "SUCCESS" : "FAILED");
-    
-}
 
 void addCollisionObject(moveit::planning_interface::PlanningSceneInterface& planning_scene_interface)
 {
@@ -86,7 +61,7 @@ void addCollisionObject(moveit::planning_interface::PlanningSceneInterface& plan
 int main(int argc, char** argv)
 {
 
-    ros::init(argc, argv, "goToPose_node");
+    ros::init(argc, argv, "pip_pose_node");
     ros::NodeHandle nh;
     ros::AsyncSpinner spinner(1);
     spinner.start();
@@ -95,24 +70,16 @@ int main(int argc, char** argv)
     moveit::planning_interface::MoveGroupInterface group("fr3_arm");
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
-    group.setPlanningTime(45.0);
-
     //add the collisions objects in the scene
     addCollisionObject(planning_scene_interface);
 
     ros::WallDuration(1.0).sleep();
 
-    // plan the move
-    plan_move(group);
+    // get the current pose
+    get_pip_tip_pose(group);
 
     ros::WallDuration(1.0).sleep();
 
-    //exexcute the planned path
-    execute_move(group);
-
-    ros::WallDuration(1.0).sleep();
-
-    ros::waitForShutdown();
     return 0;
 
 }

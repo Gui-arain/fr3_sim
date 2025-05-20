@@ -165,6 +165,10 @@ add_executable(move_single_joint_server src/move_joint_service.cpp)
 add_dependencies(move_single_joint_server ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(move_single_joint_server ${catkin_LIBRARIES})
 
+add_executable(pip_pose_node src/pip_tip_pose.cpp)
+add_dependencies(pip_pose_node ${fr3_sim_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(pip_pose_node ${catkin_LIBRARIES})
+
 
 #############
 ## Install ##
